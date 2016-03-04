@@ -7,10 +7,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+// here is an example of how your query should look like
+// "CREATE TABLE Sheet1 (Sno Int, " + "Employee_Name VARCHAR, " + "Company VARCHAR, " + "Date_Of_joining DATE, " + "Stipend DECIMAL, " + "Stocks_Held DECIMAL)";
+// "INSERT INTO Sheet1 (Sno, Employee_Name, Company,Date_Of_joining,Stipend,Stocks_Held) values ('1', 'Siddharth Rout', 'Defining Horizons', '20/7/2014','2000.75','0.01')";
+
+
 namespace ExcelWriter
 {
     public class ExcelCreate
     {
+        /// <summary>
+        /// A simple way to create an excel file
+        /// </summary>
+        /// <param name="dView"></param>
+        /// <param name="tempPath"></param>
+        /// <param name="conString"></param>
         public void Write(DataView dView, string tempPath, string conString)
         {
             // set the temp file
@@ -35,13 +47,14 @@ namespace ExcelWriter
 
             // get the datatable
             DataTable dt = dView.Table;
-
+           
             // Loop through each column to add column header. 
             int colcount = 1;
             string header = "CREATE TABLE [Sheet1] (";
             string header2 = String.Empty;
             foreach (DataColumn col in dt.Columns)
             {
+                // add commas
                 if (colcount > 1)
                 {
                     //sw.Write("\n");
@@ -50,7 +63,6 @@ namespace ExcelWriter
                 }
 
                 // Output the value of column's header.
-                //sw.Write(col.ColumnName.ToString() + "\t");
                 header += col.ColumnName.ToString().Replace("#", "").Replace(" ", "") + "1 VARCHAR";
                 header2 += col.ColumnName.ToString().Replace("#", "").Replace(" ", "") + "1";
 
@@ -59,8 +71,8 @@ namespace ExcelWriter
             header += ");";
 
 
-            //~~> Command to create the table
-            olecmd.CommandText = header;   // "CREATE TABLE Sheet1 (Sno Int, " + "Employee_Name VARCHAR, " + "Company VARCHAR, " + "Date_Of_joining DATE, " + "Stipend DECIMAL, " + "Stocks_Held DECIMAL)";
+            //~~> Command to create the table            
+            olecmd.CommandText = header;
             olecmd.ExecuteNonQuery();
 
             int i;
@@ -80,7 +92,6 @@ namespace ExcelWriter
                     {
                         row += ",";
                     }
-                    //sw.Write(tab + dr[i].ToString());
                     row += "'" + dr[i].ToString().Replace("'", " ").Replace("\"", " ").Replace("#", " ") + "'";
                 }
                 row += ");";
@@ -95,11 +106,7 @@ namespace ExcelWriter
                 }
                 j++;
             }
-
-            //~~> Adding Data
-            //olecmd.CommandText = row;  // "INSERT INTO Sheet1 (Sno, Employee_Name, Company,Date_Of_joining,Stipend,Stocks_Held) values " + 
-            //"('1', 'Siddharth Rout', 'Defining Horizons', '20/7/2014','2000.75','0.01')";
-            //olecmd.ExecuteNonQuery();
+                        
 
             //~~> Close the connection
             olecon.Close();
@@ -111,14 +118,14 @@ namespace ExcelWriter
                 fs.CopyTo(ms);
             }
 
-            // delete the old file
+            // delete the old file. uncomment the file delete if you want to 
             if (File.Exists(fileWpath))
             {
                 //File.Delete(fileWpath);
             }
 
             /*
-            // output file to browser
+            // output file to browser. uncomment this if you need it
             HttpContext.Current.Response.Clear();
             HttpContext.Current.Response.ContentType = "application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment; filename=export.xlsx");
