@@ -14,7 +14,7 @@ namespace ExcelWriter
         public void Write(DataView dView, string tempPath, string conString)
         {
             // set the temp file
-            string vardate = DateTime.Now.ToFileTime().ToString(); 
+            string vardate = DateTime.Now.ToFileTime().ToString();  
             string fileWpath = tempPath;
             // delete the old file
             if (File.Exists(fileWpath))
