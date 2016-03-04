@@ -17,3 +17,5 @@ This is the one I use. Note the fileWpath. It's where you'll be creating the exc
 Provider=Microsoft.ACE.OLEDB.12.0;" + "Data Source=" + fileWpath + ";" + "Extended Properties=\"Excel 12.0 Xml;HDR=YES;\"
 
 I hope this helps people out there.
+
+And a big thanks to StackOverflow for the help.
